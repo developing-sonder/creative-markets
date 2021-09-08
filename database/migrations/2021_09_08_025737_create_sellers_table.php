@@ -18,11 +18,12 @@ class CreateSellersTable extends Migration
             $table->string("first_name", 25);
             $table->string("last_name", 25);
             $table->string("shop_category", 50);
+            $table->string('portfolio_url', 2083);
             $table->boolean('author_content_confirmation');
             $table->boolean('has_online_store');
-            $table->string('perspective_on_quality', 80);
-            $table->string('experience_level', 80);
-            $table->string('understanding_of_business', 80);
+            $table->string('perspective_on_quality');
+            $table->string('experience_level');
+            $table->string('understanding_of_business');
             $table->timestamps();
             $table->softDeletes();
         });

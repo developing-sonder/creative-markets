@@ -44,6 +44,7 @@ Fairly straight forward schema here as we have two objects; `Seller` and `Online
 | id                          | UNSIGNED BigInt | No       |         | Auto-Increment Primary Key |
 | first_name                  | VARCHAR(25)     | No       |         |                            |
 | last_name                   | VARCHAR(25)     | No       |         |                            |
+| portfolio_url               | VARCHAR(2083)   | No       |         |                            |
 | shop_category               | VARCHAR(50)     | No       |         |                            |
 | author_content_confirmation | TINYINT         | No       | 0       |                            |
 | has_online_stores           | TINYINT         | No       | 0       |                            |
