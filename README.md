@@ -1,64 +1,100 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<p align="center">Matthew Moore - Full Stack Technical Challenge</p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Creative Market Seller Application
 
-## About Laravel
+## Intial Thoughts - Preprogramming
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Here you'll find a mind dump of my thought process as I approached this challenge. 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This seems like a fairly straight-forward sign-up page for sellers to open a shop. This two-step process with a thank you page
+should be handled by a vuejs component that handles the information gathering and posts to a laravel backend. 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Can a seller have multiple shops? It doesn't appear so from this design, but it seems entirely possible that a seller could
+have multiple shops. I would implement a different schema, with the Shop having it's own schema pertaining to it's own information.
+But, as this form sits I don't believe we have enough information to split it out from the seller table.
 
-## Learning Laravel
+### Step 1 Notes and Potential Questions for Designer/Project Manager
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Are any of these field required? Obviously, but which ones? All of them? This seems ambiguous just from the design. 
+- Styling for the field errors? On field or in a box above/below?
+- No Email? Lack of email makes this field incomplete in a real-world scenario.
+- Portfolio Link needs to be a verified url 
+- If the porfolio is populated we need to verify the check mark. 
+- Do we want/need frontend and backend validation? Intial thoughts are yes though this may be outside the scope of this assignment.
+- How are the Urls of the Online Stores suppose to be delimited? Commas? New Line? This would need to be resolved before completing
+  in a real life scenario.
+- If we're doing front-end validation, we need to validate the step 1 data on the click of the "next" button. Retracing to this step on submit would be awkward and poor user experience.
+- We aren't accepting duplicate porfolios. So we need an end-point that checks to see if the portfolio has already been used and disabled submitting if true. 
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Step 2 Notes and Potential Questions for Designer/Project Manager
 
-## Laravel Sponsors
+- Not submitting after round 1. The Next button should not post the data. 
+- Transition? Nothing is listed. I would reach out to ask for the panel transition requested on the "next" button's action. 
+- Submit button, there's no spinner or loading listed. I would ask if that were wanted or necessary. 
+- There isn't an indicated area for error messages. 
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+## Data Design
+Fairly straight forward schema here as we have two objects; `Seller` and `OnlineStore`. A ManyToMany relationship existing between the two of them.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
+### Database Schema
+#### `sellers` Table
+| Column                      | Type            | Nullable | Default | Comments                   |
+|-----------------------------|-----------------|----------|---------|----------------------------|
+| id                          | UNSIGNED BigInt | No       |         | Auto-Increment Primary Key |
+| first_name                  | VARCHAR(25)     | No       |         |                            |
+| last_name                   | VARCHAR(25)     | No       |         |                            |
+| shop_category               | VARCHAR(50)     | No       |         |                            |
+| author_content_confirmation | TINYINT         | No       | 0       |                            |
+| has_online_stores           | TINYINT         | No       | 0       |                            |
+| perspective_on_quality      | VARCHAR(80)     | No       |         |                            |
+| experience_level            | VARCHAR(80)     | No       |         |                            |
+| understanding_of_business   | VARCHAR(80)     | No       |         |                            |
+| created_at                  | TIMESTAMP       | No       |         |                            |
+| updated_at                  | TIMESTAMP       | Yes      |         |                            |
+| deleted_at                  | TIMESTAMP       | Yes      |         |                            |
 
-## Contributing
+#### `online_stores` Table
+| Column     | Type            | Nullable | Default | Comments                                |
+|------------|-----------------|----------|---------|-----------------------------------------|
+| id         | UNSIGNED BigInt | No       |         | Auto-Increment Primary Key              |
+| seller_id  | UNSIGNED BigInt | No       |         | Seller Foreign Key                      |
+| url        | VARCHAR(2083)   | No       |         | Max-Length of an Acceptable URL is 2083 |
+| created_at | TIMESTAMP       | No       |         |                                         |
+| updated_at | TIMESTAMP       | Yes      |         |                                         |
+| deleted_at | TIMESTAMP       | Yes      |         |                                         |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### `online_store_seller` Table
+| Column          | Type            | Nullable | Default | Comments                |
+|-----------------|-----------------|----------|---------|-------------------------|
+| online_store_id | UNSIGNED BigInt | No       |         | OnlineStore Foreign Key |
+| seller_id       | UNSIGNED BigInt | No       |         | Seller Foreign Key      |
+| created_at      | TIMESTAMP       | No       |         |                         |
+| updated_at      | TIMESTAMP       | Yes      |         |                         |
+| deleted_at      | TIMESTAMP       | Yes      |         |                         |
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Models
 
-## Security Vulnerabilities
+Migrations and Model Factories for all below as well as Unit testing for creation of each. For a more robust example we should include integration for the relationships.  
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- `Seller`
+- `OnlineStore`
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## HTTP Process
+#### Routes
+- Route for Seller Resource
+
+#### Request Validation Classes
+- Seller 
+
+## Tests
+
+### Unit
+- `Seller`
+- `OnlineStore`
+
+### Feature
+- Seller Resource
+- Seller Portfolio Search
