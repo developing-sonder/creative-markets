@@ -27,10 +27,11 @@ class SellerFactory extends Factory
         return [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
+            'portfolio_url' => $this->faker->url,
             'shop_category' => $this->randomShopCategory(),
             'perspective_on_quality' => $this->randomPerspectiveOnQuality(),
             'experience_level' => $this->randomExperienceLevel(),
-            'understanding_business' => $this->randomUnderstandingOfBusiness()
+            'understanding_of_business' => $this->randomUnderstandingOfBusiness()
         ];
     }
 
@@ -43,7 +44,7 @@ class SellerFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'has_online_stores' => 1,
+                'has_online_store' => 1,
                 'author_content_confirmation' => 1
             ];
         });

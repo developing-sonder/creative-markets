@@ -11,6 +11,8 @@ class Seller extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $guarded = ['id'];
+
     public function onlineStores(): BelongsToMany
     {
         return $this->belongsToMany(OnlineStore::class);
