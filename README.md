@@ -58,7 +58,6 @@ Fairly straight forward schema here as we have two objects; `Seller` and `Online
 | Column     | Type            | Nullable | Default | Comments                                |
 |------------|-----------------|----------|---------|-----------------------------------------|
 | id         | UNSIGNED BigInt | No       |         | Auto-Increment Primary Key              |
-| seller_id  | UNSIGNED BigInt | No       |         | Seller Foreign Key                      |
 | url        | VARCHAR(2083)   | No       |         | Max-Length of an Acceptable URL is 2083 |
 | created_at | TIMESTAMP       | No       |         |                                         |
 | updated_at | TIMESTAMP       | Yes      |         |                                         |
